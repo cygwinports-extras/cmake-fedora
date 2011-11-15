@@ -1,0 +1,77 @@
+--- origsrc/cmake-fedora-0.8.1-Source/CMakeLists.txt	2011-09-20 01:00:13.000000000 -0500
++++ src/cmake-fedora-0.8.1-Source/CMakeLists.txt	2011-11-02 03:02:45.269588100 -0500
+@@ -74,10 +74,10 @@ SET(PACK_SOURCE_IGNORE_FILES ${PACK_SOUR
+     ${PRJ_IGNORE_FILES_COMMON} "/bin/")
+ 
+ PACK_SOURCE(PACK_SOURCE_FILE_NAME "${RPM_BUILD_SOURCES}")
+-PACK_RPM(PRJ_SRPM_FILE_NAME "${RPM_BUILD_SPECS}/project.spec.in" "${PACK_SOURCE_FILE_NAME}")
++PACK_RPM(PRJ_SRPM_FILE_NAME "${CMAKE_CURRENT_SOURCE_DIR}/SPECS/project.spec.in" "${PACK_SOURCE_FILE_NAME}")
+ 
+ # "Off" Warning is displayed if mock is not installed.
+-USE_MOCK("${RPM_BUILD_SPECS}/project.spec.in")
++USE_MOCK("${CMAKE_CURRENT_SOURCE_DIR}/SPECS/project.spec.in")
+ 
+ ####################################################################
+ # Hosting and Release
+--- origsrc/cmake-fedora-0.8.1-Source/Modules/ManageTranslation.cmake	2011-09-20 01:00:13.000000000 -0500
++++ src/cmake-fedora-0.8.1-Source/Modules/ManageTranslation.cmake	2011-11-14 18:40:12.068264300 -0600
+@@ -171,7 +171,7 @@ IF(NOT DEFINED _MANAGE_TRANSLATION_CMAKE
+ 	    ENDIF(_xgettext_option_list STREQUAL "")
+ 
+ 	    IF("${_potFile}" STREQUAL "")
+-		SET(_potFile "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.pot")
++		SET(_potFile "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.pot")
+ 	    ENDIF("${_potFile}" STREQUAL "")
+ 
+ 	    M_MSG(${M_INFO2} "XGETTEXT=${XGETTEXT_EXECUTABLE} ${_xgettext_option_list} -o ${_potFile} ${_src_list}")
+@@ -193,7 +193,7 @@ IF(NOT DEFINED _MANAGE_TRANSLATION_CMAKE
+ 	    GET_FILENAME_COMPONENT(_absPotFile ${_potFile} ABSOLUTE)
+ 	    GET_FILENAME_COMPONENT(_absPotDir ${_absPotFile} PATH)
+ 	    FOREACH(_locale ${_locale_list})
+-		SET(_gmoFile ${_absPotDir}/${_locale}.gmo)
++		SET(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/${_locale}.gmo)
+ 		SET(_absFile ${_absPotDir}/${_locale}.po)
+ 		ADD_CUSTOM_COMMAND(	OUTPUT ${_gmoFile}
+ 		    COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} --quiet --update --backup=none
+--- origsrc/cmake-fedora-0.8.1-Source/Modules/ManageVersion.cmake	2011-09-20 01:00:13.000000000 -0500
++++ src/cmake-fedora-0.8.1-Source/Modules/ManageVersion.cmake	2011-11-02 02:52:23.031303200 -0500
+@@ -41,9 +41,10 @@ IF(NOT DEFINED _MANAGE_VERSION_CMAKE_)
+     INCLUDE(ManageVariable)
+ 
+     MACRO(LOAD_RELEASE_FILE releaseFile)
+-	COMMAND_OUTPUT_TO_VARIABLE(_grep_line grep -F "[Changes]" -n -m 1 ${releaseFile})
++	SET(RELEASE_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${releaseFile})
++
++	COMMAND_OUTPUT_TO_VARIABLE(_grep_line grep -F "[Changes]" -n -m 1 ${RELEASE_FILE})
+ 
+-	SET(RELEASE_FILE ${releaseFile})
+ 	#MESSAGE("_grep_line=|${_grep_line}|")
+ 	IF("${_grep_line}" STREQUAL "")
+ 	    MESSAGE(FATAL_ERROR "${releaseFile} does not have a [Changes] tag!")
+@@ -54,7 +55,7 @@ IF(NOT DEFINED _MANAGE_VERSION_CMAKE_)
+ 	# Read header
+ 	SET(_release_file_header "${CMAKE_FEDORA_TMP_DIR}/${releaseFile}_HEADER")
+ 	MATH(EXPR _setting_line_num ${_line_num}-1)
+-	COMMAND_OUTPUT_TO_VARIABLE(_releaseFile_head head -n ${_setting_line_num} ${releaseFile})
++	COMMAND_OUTPUT_TO_VARIABLE(_releaseFile_head head -n ${_setting_line_num} ${RELEASE_FILE})
+ 	FILE(WRITE "${_release_file_header}" "${_releaseFile_head}")
+ 	SETTING_FILE_GET_ALL_VARIABLES("${_release_file_header}")
+ 	SET(CHANGE_SUMMARY "${SUMMARY}")
+@@ -66,7 +67,7 @@
+ 	# Read [Changes] Section
+ 	SET(_release_file_changes "${CMAKE_FEDORA_TMP_DIR}/${releaseFile}_CHANGES")
+ 	MATH(EXPR _line_num ${_line_num}+1)
+-	COMMAND_OUTPUT_TO_VARIABLE(CHANGELOG_ITEMS tail -n +${_line_num} ${releaseFile})
++	COMMAND_OUTPUT_TO_VARIABLE(CHANGELOG_ITEMS tail -n +${_line_num} ${RELEASE_FILE})
+ 	FILE(WRITE "${_release_file_changes}" "${CHANGELOG_ITEMS}")
+ 
+ 	INCLUDE(DateTimeFormat)
+@@ -89,7 +90,7 @@ IF(NOT DEFINED _MANAGE_VERSION_CMAKE_)
+ 	ADD_CUSTOM_COMMAND(OUTPUT ChangeLog  ${CMAKE_CACHE_TXT}
+ 	    COMMAND ${CMAKE_COMMAND} -E remove -f ${CMAKE_CACHE_TXT}
+ 	    COMMAND ${CMAKE_COMMAND} ${CMAKE_SOURCE_DIR}
+-	    DEPENDS ${releaseFile} ChangeLog.prev
++	    DEPENDS ${RELEASE_FILE} ChangeLog.prev
+ 	    COMMENT "ChangeLog or ${CMAKE_CACHE_TXT} is older than ${releaseFile}. Rebuilding"
+ 	    VERBATIM
+ 	    )

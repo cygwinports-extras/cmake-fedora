@@ -1,0 +1,12 @@
+inherit cmake
+
+DESCRIPTION="CMake modules for RPM packages"
+HOMEPAGE="https://fedorahosted.org/cmake-fedora/"
+SRC_URI="https://fedorahosted.org/releases/c/m/cmake-fedora/${P}-Source.tar.gz"
+SRC_DIR="${P}-Source"
+
+PATCH_URI="
+	0.8.1-cmake-dir.patch
+	0.8.1-docdir.patch
+	0.8.1-vpath.patch
+"

@@ -1,0 +1,16 @@
+--- origsrc/cmake-fedora-0.8.1-Source/CMakeLists.txt	2011-09-20 01:00:13.000000000 -0500
++++ src/cmake-fedora-0.8.1-Source/CMakeLists.txt	2011-11-02 03:02:45.269588100 -0500
+@@ -49,11 +49,11 @@ INSTALL(FILES CMakeLists.txt ${RELEASE_F
+     DESTINATION "${PRJ_DOC_DIR}/examples")
+ 
+ INSTALL(DIRECTORY Modules/
+-    DESTINATION ${DATA_DIR}/cmake/Modules
++    DESTINATION ${DATA_DIR}/cmake-${CMAKE_VERSION}/Modules
+     REGEX "\\.cmake(\\.in)?$")
+ 
+ INSTALL(DIRECTORY Templates/
+-    DESTINATION ${DATA_DIR}/cmake/Templates)
++    DESTINATION ${DATA_DIR}/cmake-${CMAKE_VERSION}/Templates)
+ 
+ INSTALL(PROGRAMS scripts/cmake-fedora-newprj.sh
+     DESTINATION ${BIN_DIR})

@@ -1,0 +1,20 @@
+--- origsrc/cmake-fedora-0.8.1-Source/Modules/ManageVersion.cmake	2011-09-20 01:00:13.000000000 -0500
++++ src/cmake-fedora-0.8.1-Source/Modules/ManageVersion.cmake	2011-11-02 02:52:23.031303200 -0500
+@@ -31,7 +31,7 @@
+ #     + CHANGELOG_ITEMS: Lines below the [Changes] tag.
+ #     + RELEASE_FILE: The loaded release file.
+ #     + PRJ_DOC_DIR: Documentation for the project.
+-#       Default: ${DOC_DIR}/${PROJECT_NAME}-${PRJ_VER}
++#       Default: ${DOC_DIR}/${PROJECT_NAME}
+ #
+ 
+ IF(NOT DEFINED _MANAGE_VERSION_CMAKE_)
+@@ -60,7 +60,7 @@ IF(NOT DEFINED _MANAGE_VERSION_CMAKE_)
+ 	SET(CHANGE_SUMMARY "${SUMMARY}")
+ 
+ 	SET_COMPILE_ENV(PRJ_VER "${PRJ_VER}" DISPLAY STRING "Project Version")
+-	SET_COMPILE_ENV(PRJ_DOC_DIR "${DOC_DIR}/${PROJECT_NAME}-${PRJ_VER}"
++	SET_COMPILE_ENV(PRJ_DOC_DIR "${DOC_DIR}/${PROJECT_NAME}"
+ 	    DISPLAY PATH "Project docdir prefix")
+ 
+ 	# Read [Changes] Section
