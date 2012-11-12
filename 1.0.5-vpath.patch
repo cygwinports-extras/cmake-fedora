@@ -1,0 +1,22 @@
+--- origsrc/cmake-fedora-1.0.5-Source/CMakeLists.txt	2012-11-11 17:52:57.253325200 -0600
++++ src/cmake-fedora-1.0.5-Source/CMakeLists.txt	2012-11-11 18:01:43.901447800 -0600
+@@ -65,7 +65,7 @@ INSTALL(DIRECTORY Modules/
+ INSTALL(DIRECTORY Templates/
+     DESTINATION ${DATA_DIR}/cmake-${CMAKE_VERSION}/Templates)
+ 
+-SET(EXECUTABLES scripts/cmake-fedora-newprj scripts/koji-build-scratch)
++SET(EXECUTABLES scripts/cmake-fedora-newprj ${CMAKE_BINARY_DIR}/scripts/koji-build-scratch)
+ #STRING_JOIN(PRJ_EXECUTABLES " " ${EXECUTABLES})
+ 
+ INSTALL(PROGRAMS ${EXECUTABLES}
+--- origsrc/cmake-fedora-1.0.5-Source/Modules/ManageTranslation.cmake	2012-08-20 21:19:48.000000000 -0500
++++ src/cmake-fedora-1.0.5-Source/Modules/ManageTranslation.cmake	2012-11-11 18:25:12.456012500 -0600
+@@ -180,7 +180,7 @@ IF(NOT DEFINED _MANAGE_TRANSLATION_CMAKE
+ 	    GET_FILENAME_COMPONENT(_absPotDir ${_absPotFile} PATH)
+ 	    FOREACH(_locale ${_localeList})
+ 		SET(_absGmoFile ${_absPotDir}/${_locale}.gmo)
+-		SET(_absPoFile ${_absPotDir}/${_locale}.po)
++		SET(_absPoFile ${CMAKE_CURRENT_SOURCE_DIR}/${_locale}.po)
+ 
+ 		ADD_CUSTOM_COMMAND(OUTPUT ${_absPoFile}
+ 		    COMMAND ${GETTEXT_MSGMERGE_CMD}

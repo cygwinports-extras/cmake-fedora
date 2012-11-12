@@ -1,0 +1,19 @@
+inherit cmake
+
+NAME="cmake-fedora"
+VERSION=1.0.5
+RELEASE=1
+CATEGORY="Devel"
+SUMMARY="CMake modules for RPM packages"
+DESCRIPTION="cmake-fedora consists a set of cmake modules that provides helper
+macros and targets for linux, especially Fedora developers."
+REQUIRES="cmake"
+HOMEPAGE="https://fedorahosted.org/cmake-fedora/"
+SRC_URI="https://fedorahosted.org/releases/c/m/cmake-fedora/${P}-Source.tar.gz"
+SRC_DIR="${P}-Source"
+
+PATCH_URI="
+	0.8.1-cmake-dir.patch
+	0.8.1-docdir.patch
+	1.0.5-vpath.patch
+"

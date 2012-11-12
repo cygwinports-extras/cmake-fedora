@@ -1,5 +1,0 @@
-category: Devel
-requires: cmake
-sdesc: "CMake modules for RPM packages"
-ldesc: "cmake-fedora consists a set of cmake modules that provides 
-helper macros and targets for linux, especially Fedora developers."
