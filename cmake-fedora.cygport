@@ -2,7 +2,7 @@ inherit cmake
 
 NAME="cmake-fedora"
 VERSION=1.0.5
-RELEASE=1
+RELEASE=2
 CATEGORY="Devel"
 SUMMARY="CMake modules for RPM packages"
 DESCRIPTION="cmake-fedora consists a set of cmake modules that provides helper
